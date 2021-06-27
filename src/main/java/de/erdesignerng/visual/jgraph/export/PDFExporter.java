@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -30,17 +31,15 @@ public class PDFExporter implements Exporter{
     @Override
     public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
             String dest = "D:/PUNYA ADO/addingImage.pdf";
-            PdfWriter writer = new PdfWriter(aStream);
-
+            PdfWriter writer = new PdfWriter(dest);
             PdfDocument pdf = new PdfDocument(writer);
-
             Document document = new Document(pdf);
 
             Color theBackgroundColor = aGraph.getBackground();
             BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
             ImageIO.write(theImage, "png", aStream);
 
-            String images = "D:/PUNYA ADO/test.png";
+            String images = "D:/PUNYA ADO/test.jpg";
             ImageData data = ImageDataFactory.create(images);
 
             Image coba = new Image(data);
