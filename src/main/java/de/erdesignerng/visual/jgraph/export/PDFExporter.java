@@ -1,24 +1,21 @@
 package de.erdesignerng.visual.jgraph.export;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
 
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.IBlockElement;
-import com.itextpdf.layout.element.Image;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
+
 import java.awt.*;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class PDFExporter implements Exporter{
 
@@ -29,26 +26,20 @@ public class PDFExporter implements Exporter{
 
 
     @Override
-    public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
-            String dest = "D:/PUNYA ADO/addingImage.pdf";
-            PdfWriter writer = new PdfWriter(dest);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
+    public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException, DocumentException {
+        Color theBackgroundColor = aGraph.getBackground();
+        BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
+        ByteArrayOutputStream imagepng = new ByteArrayOutputStream();
+        ImageIO.write(theImage, "png", imagepng);
 
-            Color theBackgroundColor = aGraph.getBackground();
-            BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
-            ImageIO.write(theImage, "png", aStream);
+        Document document = new Document(PageSize.A4.rotate());
+        PdfWriter.getInstance(document,aStream);
+        document.open();
 
-            String images = "D:/PUNYA ADO/test.jpg";
-            ImageData data = ImageDataFactory.create(images);
+        Image image = Image.getInstance(imagepng.toByteArray());
 
-            Image coba = new Image(data);
-
-            document.add(coba);
-            document.close();
-            aStream.flush();
-            aStream.close();
-
+        document.add(image);
+        document.close();
     }
 
     @Override

@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.jgraph.export;
 
+import com.itextpdf.text.DocumentException;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 
 import java.awt.*;
@@ -31,7 +32,7 @@ public interface Exporter {
 
     String getFileExtension();
 
-    void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException;
+    void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException, DocumentException;
 
     void exportToStream(Component aComponent, OutputStream aStream) throws IOException;
 }
